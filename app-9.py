@@ -1,12 +1,4 @@
-
 import os
-os.environ["XDG_CONFIG_HOME"] = "/tmp"
-
-import asyncio
-try:
-    asyncio.get_running_loop()
-except RuntimeError:
-    asyncio.set_event_loop(asyncio.new_event_loop())
 import streamlit as st
 import requests
 from PyPDF2 import PdfReader
@@ -47,7 +39,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-API_KEY = "AIzaSyD0dudBUXFRAqHaSex6LbiSxKd7q2mg86o"  # Replace with your actual Gemini API key
+API_KEY = os.getenv("API_KEY")  # Replace with your actual Gemini API key
 
 def extract_text_from_pdf(pdf_file):
     reader = PdfReader(pdf_file)
