@@ -1,0 +1,38 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Set writable locations for Streamlit and Matplotlib
+ENV STREAMLIT_CONFIG_DIR=/app/.streamlit
+ENV MPLCONFIGDIR=/app/.cache/matplotlib
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    software-properties-common \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy app files
+COPY requirements.txt ./
+COPY app.py ./
+COPY Jobwise_Logo.png ./
+
+# Install Python dependencies
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Create config directories with appropriate permissions
+RUN mkdir -p /app/.streamlit /app/.cache/matplotlib && \
+    chown -R 1000:1000 /app && \
+    chmod -R u+rw /app/.streamlit /app/.cache/matplotlib && \
+    echo "[browser]\ngatherUsageStats = false" > /app/.streamlit/config.toml
+
+# Run as non-root user
+USER 1000:1000
+
+EXPOSE 8501
+
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
