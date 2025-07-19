@@ -1,4 +1,11 @@
 import os
+os.environ["XDG_CONFIG_HOME"] = "/tmp"
+
+import asyncio
+try:
+    asyncio.get_running_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
 import streamlit as st
 import requests
 from PyPDF2 import PdfReader
