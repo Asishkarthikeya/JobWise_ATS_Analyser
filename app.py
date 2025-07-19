@@ -39,7 +39,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-API_KEY = os.getenv("API_KEY")  # Replace with your actual Gemini API key
+API_KEY = os.getenv("AIzaSyBoB1UU5C5tdReHUVpZS2ohGn-A2V2z-3Y")  # Replace with your actual Gemini API key
 
 def extract_text_from_pdf(pdf_file):
     reader = PdfReader(pdf_file)
